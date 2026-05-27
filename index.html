@@ -27,7 +27,7 @@ h1 {
 
 #level {
     color: #aaa;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 #number {
@@ -39,8 +39,24 @@ h1 {
 
 #text {
     color: #aaa;
-    margin-top: 20px;
+    margin-top: 10px;
     font-size: 18px;
+}
+
+#barContainer {
+    width: 300px;
+    height: 6px;
+    background: #222;
+    margin-top: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#bar {
+    height: 100%;
+    width: 100%;
+    background: white;
+    transition: width 0.1s linear;
 }
 
 #continue {
@@ -79,6 +95,10 @@ input {
 
 <div id="text">Zapamiętaj liczbę</div>
 
+<div id="barContainer">
+    <div id="bar"></div>
+</div>
+
 <input type="text" id="input" placeholder="Wpisz liczbę">
 
 <div id="result"></div>
@@ -89,6 +109,7 @@ input {
 let number = "";
 let level = 1;
 let state = "start";
+let timer;
 
 function generate(len) {
     let n = "";
@@ -96,6 +117,29 @@ function generate(len) {
         n += Math.floor(Math.random() * 10);
     }
     return n;
+}
+
+function getTime(level) {
+    return Math.min(1500 + level * 400, 5000);
+}
+
+function updateBar(time) {
+    let bar = document.getElementById("bar");
+    let start = Date.now();
+
+    clearInterval(timer);
+
+    timer = setInterval(() => {
+        let elapsed = Date.now() - start;
+        let percent = 100 - (elapsed / time) * 100;
+
+        if (percent <= 0) {
+            percent = 0;
+            clearInterval(timer);
+        }
+
+        bar.style.width = percent + "%";
+    }, 50);
 }
 
 document.body.addEventListener("click", () => {
@@ -109,6 +153,8 @@ document.body.addEventListener("click", () => {
 });
 
 function startRound() {
+    let time = getTime(level);
+
     number = generate(level);
 
     document.getElementById("result").innerText = "";
@@ -119,15 +165,19 @@ function startRound() {
     document.getElementById("text").innerText = "Zapamiętaj liczbę";
     document.getElementById("input").style.display = "none";
 
+    document.getElementById("bar").style.width = "100%";
+
+    updateBar(time);
+
     state = "show";
 
     setTimeout(() => {
         document.getElementById("number").innerText = "";
-        document.getElementById("text").innerText = "Wpisz liczbę i naciśnij ENTER, aby sprawdzić";
+        document.getElementById("text").innerText = "Wpisz liczbę i naciśnij ENTER";
         document.getElementById("input").style.display = "block";
         document.getElementById("input").focus();
         state = "input";
-    }, 1500);
+    }, time);
 }
 
 document.addEventListener("keydown", function(e) {
