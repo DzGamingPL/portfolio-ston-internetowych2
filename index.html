@@ -88,7 +88,7 @@ input {
 
 <body>
 
-<h1>Number Memory</h1>
+<h1>Zapamiętaj Kod</h1>
 <div id="level">Level: 1</div>
 
 <div id="number">Kliknij gdziekolwiek, aby rozpocząć</div>
@@ -99,7 +99,7 @@ input {
     <div id="bar"></div>
 </div>
 
-<input type="text" id="input" placeholder="Wpisz liczbę">
+<input type="text" id="input" placeholder="Wpisz kod">
 
 <div id="result"></div>
 
@@ -166,7 +166,7 @@ function startRound() {
     document.getElementById("input").value = "";
 
     document.getElementById("number").innerText = number;
-    document.getElementById("text").innerText = "Zapamiętaj liczbę";
+    document.getElementById("text").innerText = "Zapamiętaj kod";
     document.getElementById("input").style.display = "none";
 
     document.getElementById("bar").style.width = "100%";
@@ -177,7 +177,7 @@ function startRound() {
 
     setTimeout(() => {
         document.getElementById("number").innerText = "";
-        document.getElementById("text").innerText = "Wpisz liczbę i naciśnij ENTER";
+        document.getElementById("text").innerText = "Wpisz kod i naciśnij ENTER";
         document.getElementById("input").style.display = "block";
         document.getElementById("input").focus();
         state = "input";
