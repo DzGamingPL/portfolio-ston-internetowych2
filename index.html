@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Number Memory</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #000;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    cursor: pointer;
+}
+
+h1 {
+    font-weight: 500;
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+#level {
+    color: #aaa;
+    margin-bottom: 30px;
+}
+
+#number {
+    font-size: 90px;
+    font-weight: bold;
+    letter-spacing: 6px;
+    min-height: 120px;
+}
+
+#text {
+    color: #aaa;
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+input {
+    padding: 12px;
+    font-size: 18px;
+    width: 220px;
+    text-align: center;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    display: none;
+    margin-top: 20px;
+}
+
+#result {
+    margin-top: 20px;
+    font-size: 20px;
+    min-height: 30px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Number Memory</h1>
+<div id="level">Level: 1</div>
+
+<div id="number">Kliknij gdziekolwiek, aby rozpocząć</div>
+
+<div id="text">Zapamiętaj liczbę</div>
+
+<input type="text" id="input" placeholder="Wpisz liczbę">
+
+<div id="result"></div>
+
+<script>
+let number = "";
+let level = 1;
+let state = "start";
+
+function generate(len) {
+    let n = "";
+    for (let i = 0; i < len; i++) {
+        n += Math.floor(Math.random() * 10);
+    }
+    return n;
+}
+
+document.body.addEventListener("click", () => {
+    if (state === "start") {
+        startRound();
+    }
+});
+
+function startRound() {
+    number = generate(level);
+
+    document.getElementById("result").innerText = "";
+    document.getElementById("input").value = "";
+
+    document.getElementById("number").innerText = number;
+    document.getElementById("text").innerText = "Zapamiętaj liczbę";
+    document.getElementById("input").style.display = "none";
+
+    state = "show";
+
+    setTimeout(() => {
+        document.getElementById("number").innerText = "";
+        document.getElementById("text").innerText = "Wpisz liczbę i naciśnij ENTER, aby sprawdzić";
+        document.getElementById("input").style.display = "block";
+        document.getElementById("input").focus();
+        state = "input";
+    }, 1500);
+}
+
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Enter" && state === "input") {
+        check();
+    }
+});
+
+function check() {
+    let user = document.getElementById("input").value;
+
+    if (user === number) {
+        level++;
+        document.getElementById("result").innerText = "✔ Poprawnie!";
+    } else {
+        level = 1;
+        document.getElementById("result").innerText = "✖ Błąd! Kliknij, aby spróbować ponownie";
+    }
+
+    document.getElementById("level").innerText = "Level: " + level;
+
+    state = "start";
+}
+</script>
+
+</body>
+</html>
