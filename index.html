@@ -43,6 +43,13 @@ h1 {
     font-size: 18px;
 }
 
+#continue {
+    margin-top: 30px;
+    font-size: 26px;
+    color: #fff;
+    display: none;
+}
+
 input {
     padding: 12px;
     font-size: 18px;
@@ -76,6 +83,8 @@ input {
 
 <div id="result"></div>
 
+<div id="continue"></div>
+
 <script>
 let number = "";
 let level = 1;
@@ -93,12 +102,17 @@ document.body.addEventListener("click", () => {
     if (state === "start") {
         startRound();
     }
+    else if (state === "continue") {
+        startRound();
+        document.getElementById("continue").style.display = "none";
+    }
 });
 
 function startRound() {
     number = generate(level);
 
     document.getElementById("result").innerText = "";
+    document.getElementById("continue").style.display = "none";
     document.getElementById("input").value = "";
 
     document.getElementById("number").innerText = number;
@@ -128,14 +142,19 @@ function check() {
     if (user === number) {
         level++;
         document.getElementById("result").innerText = "✔ Poprawnie!";
+        document.getElementById("continue").innerText = "Kliknij, aby kontynuować";
     } else {
         level = 1;
-        document.getElementById("result").innerText = "✖ Błąd! Kliknij, aby spróbować ponownie";
+        document.getElementById("result").innerText = "✖ Błąd!";
+        document.getElementById("continue").innerText = "Kliknij, aby zacząć od nowa";
     }
 
     document.getElementById("level").innerText = "Level: " + level;
 
-    state = "start";
+    document.getElementById("input").style.display = "none";
+    document.getElementById("continue").style.display = "block";
+
+    state = "continue";
 }
 </script>
 
